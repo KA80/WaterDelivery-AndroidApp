@@ -3,15 +3,16 @@
     <string name="basket_name">Basket</string>
     <string name="add">＋</string>
     <string name="order_text">Order</string>
-    <string name="choice_good">Choice Good</string>
+    <string name="selected_product_img">Select Product</string>
     <string name="count">Count</string>
     <string name="plus">+</string>
     <string name="minus">-</string>
     <string name="confirm">Confirm</string>
 
-    <string-array name="goods">
+    <string-array name="products">
         <item>Water</item>
         <item>Juice</item>
         <item>Cola</item>
     </string-array>
+    <string name="cross">✕</string>
 </resources>

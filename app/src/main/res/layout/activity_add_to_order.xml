@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <Spinner
-            android:id="@+id/select_good"
+            android:id="@+id/select_product"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -20,20 +20,20 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/spinner_background"
-            android:entries="@array/goods"
-            app:layout_constraintBottom_toTopOf="@+id/img_good"
+            android:entries="@array/products"
+            app:layout_constraintBottom_toTopOf="@+id/img_product"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/img_good"
+            android:id="@+id/img_product"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/image_view_border"
-            android:contentDescription="@string/choice_good"
+            android:contentDescription="@string/selected_product_img"
             android:src="@drawable/water"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
@@ -53,12 +53,13 @@
             android:orientation="horizontal"
             android:weightSum="100"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/btn_confirm_choice"
+            app:layout_constraintBottom_toTopOf="@+id/btn_confirm_selection"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_good">
+            app:layout_constraintTop_toBottomOf="@+id/img_product">
 
             <EditText
+                android:id="@+id/counter"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="80"
@@ -79,6 +80,7 @@
                 android:weightSum="10">
 
                 <Button
+                    android:onClick="OnPlusClick"
                     android:id="@+id/btn_plus_counter"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -87,6 +89,7 @@
                     tools:ignore="NestedWeights" />
 
                 <Button
+                    android:onClick="OnMinusClick"
                     android:id="@+id/btn_minus_counter"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -98,7 +101,8 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_confirm_choice"
+            android:id="@+id/btn_confirm_selection"
+            android:onClick="OnConfirmClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/confirm"

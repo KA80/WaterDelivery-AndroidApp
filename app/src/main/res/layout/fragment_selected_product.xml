@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="100"
+    android:orientation="horizontal"
+    tools:context=".SelectedProductFragment">
+
+    <ImageView
+        android:id="@+id/img_selected_product"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:adjustViewBounds="true"
+
+        android:background="@drawable/round_img"
+        android:contentDescription="@string/selected_product_img" />
+
+    <TextView
+        android:id="@+id/selected_product_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="66"
+        android:gravity="start|center"
+        android:paddingHorizontal="10dp" />
+
+    <TextView
+        android:id="@+id/selected_product_count"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="33"
+        android:gravity="center_horizontal|center" />
+
+    <Button
+        android:id="@+id/delete_selection"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="33"
+        android:text="@string/cross" />
+
+
+</LinearLayout>

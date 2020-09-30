@@ -1,5 +1,6 @@
 package com.example.waterdeliveryapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -7,38 +8,45 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 public class AddToOrderActivity extends AppCompatActivity {
 
-    String[] array = {"one", "two"};
+    public static ArrayList<SelectedProduct> selectedProducts;
+
+    public static String LIST_PRODUCT_KEY = "LIST_PRODUCT_KEY";
+
     private Button btnPlus;
     private Button btnMinus;
     private Button btnConfirm;
 
-    private Spinner spinnerGood;
+    private Spinner spinnerProduct;
 
     private EditText editCounter;
-    private ImageView imgGood;
+    private ImageView imgProduct;
 
-    private AdapterView.OnItemSelectedListener OnGoodSelectedListener = new AdapterView.OnItemSelectedListener() {
+    private String selectedProduct;
+
+    private AdapterView.OnItemSelectedListener OnProductSelectedListener = new AdapterView
+            .OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-            String[] goods = getResources().getStringArray(R.array.goods);
-            Toast.makeText(AddToOrderActivity.this, goods[pos], Toast.LENGTH_SHORT).show();
-            switch (goods[pos]) {
+            String[] products = getResources().getStringArray(R.array.products);
+            switch (products[pos]) {
                 case "Juice":
-                    imgGood.setImageResource(R.drawable.juice);
+                    imgProduct.setImageResource(R.drawable.juice);
                     break;
                 case "Cola":
-                    imgGood.setImageResource(R.drawable.cola);
+                    imgProduct.setImageResource(R.drawable.cola);
                     break;
                 default:
-                    imgGood.setImageResource(R.drawable.water);
+                    imgProduct.setImageResource(R.drawable.water);
                     break;
             }
+            selectedProduct = products[pos];
         }
 
         @Override
@@ -55,12 +63,69 @@ public class AddToOrderActivity extends AppCompatActivity {
 
         btnPlus = findViewById(R.id.btn_plus_counter);
         btnMinus = findViewById(R.id.btn_minus_counter);
-        btnConfirm = findViewById(R.id.btn_confirm_choice);
+        btnConfirm = findViewById(R.id.btn_confirm_selection);
 
-        spinnerGood = findViewById(R.id.select_good);
+        spinnerProduct = findViewById(R.id.select_product);
         editCounter = findViewById(R.id.counter);
-        imgGood = findViewById(R.id.img_good);
 
-        spinnerGood.setOnItemSelectedListener(OnGoodSelectedListener);
+        imgProduct = findViewById(R.id.img_product);
+
+        spinnerProduct.setOnItemSelectedListener(OnProductSelectedListener);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            selectedProducts = (ArrayList<SelectedProduct>) bundle.get(LIST_PRODUCT_KEY);
+        }
+
+    }
+
+    public void OnPlusClick(View view) {
+        editCounter.setText(String.valueOf((!editCounter.getText().toString().isEmpty()
+                ? Integer.parseInt(editCounter.getText().toString()) : 0) + 1));
+    }
+
+    public void OnMinusClick(View view) {
+        if (!editCounter.getText().toString().isEmpty()
+                && !editCounter.getText().toString().equals("0")) {
+            editCounter.setText(String.valueOf(Integer.parseInt(
+                    editCounter.getText().toString()) - 1));
+        }
+    }
+
+    public void OnConfirmClick(View view) {
+        if (!editCounter.getText().toString().isEmpty() && !editCounter.getText().toString().equals("0")) {
+            SelectedProduct product = new SelectedProduct(selectedProduct,
+                    Integer.parseInt(editCounter.getText().toString()));
+
+            boolean is_found_equal_product = false;
+            int prevCount = 0;
+            int index = 0;
+            for (int i = 0; i < selectedProducts.size(); i++) {
+                if (selectedProducts.get(i).getName().equals(product.getName())) {
+                    index = i;
+                    prevCount = selectedProducts.get(i).getCount();
+                    selectedProducts.get(i).setCount(selectedProducts.get(i).getCount() + product.getCount());
+                    is_found_equal_product = true;
+                    break;
+                }
+            }
+            if (!is_found_equal_product)
+                selectedProducts.add(product);
+
+            Intent startBasketActivity = new Intent(AddToOrderActivity.this, BasketActivity.class);
+            startBasketActivity.putExtra(BasketActivity.LIST_PRODUCT_KEY, selectedProducts);
+            startActivity(startBasketActivity);
+            if (!is_found_equal_product)
+                selectedProducts.remove(selectedProducts.size() - 1);
+            else
+                selectedProducts.get(index).setCount(prevCount);
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        BasketActivity.selectedProducts = selectedProducts;
     }
 }
