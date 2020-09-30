@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,7 @@ public class AddToOrderActivity extends AppCompatActivity {
 
     public static String LIST_PRODUCT_KEY = "LIST_PRODUCT_KEY";
 
+    private Button btnCancel;
     private Button btnPlus;
     private Button btnMinus;
     private Button btnConfirm;
@@ -55,11 +57,24 @@ public class AddToOrderActivity extends AppCompatActivity {
         }
     };
 
+    private Button.OnClickListener onCancelClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            onBackPressed();
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_add_to_order);
+        setSupportActionBar((Toolbar) findViewById(R.id.tool_bar));
+
+        btnCancel = findViewById(R.id.btn_close_selection);
+        btnCancel.setOnClickListener(onCancelClickListener);
+
 
         btnPlus = findViewById(R.id.btn_plus_counter);
         btnMinus = findViewById(R.id.btn_minus_counter);
