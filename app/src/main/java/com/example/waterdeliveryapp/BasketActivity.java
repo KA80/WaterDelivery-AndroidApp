@@ -35,6 +35,7 @@ public class BasketActivity extends AppCompatActivity {
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             selectedProducts.clear();
                                             Intent clearActivity = new Intent(BasketActivity.this, BasketActivity.class);
+                                            clearActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                             startActivity(clearActivity);
                                             finish();
                                         }
