@@ -66,12 +66,12 @@ public class AddToOrderActivity extends AppCompatActivity {
 
     }
 
-    public void OnPlusClick(View view) {
+    public void onPlusClick(View view) {
         editCounter.setText(String.valueOf((!editCounter.getText().toString().isEmpty()
                 ? Integer.parseInt(editCounter.getText().toString()) : 0) + 1));
     }
 
-    public void OnMinusClick(View view) {
+    public void onMinusClick(View view) {
         if (!editCounter.getText().toString().isEmpty()
                 && !editCounter.getText().toString().equals("0")) {
             editCounter.setText(String.valueOf(Integer.parseInt(
@@ -79,7 +79,7 @@ public class AddToOrderActivity extends AppCompatActivity {
         }
     }
 
-    public void OnConfirmClick(View view) {
+    public void onConfirmClick(View view) {
         if (!editCounter.getText().toString().isEmpty() && !editCounter.getText().toString().equals("0")) {
             SelectedProduct product = new SelectedProduct(
                     selectedProduct, Integer.parseInt(editCounter.getText().toString()));
@@ -108,7 +108,7 @@ public class AddToOrderActivity extends AppCompatActivity {
 
     }
 
-    public void OnCancelClick(View view) {
+    public void onCancelClick(View view) {
         onBackPressed();
     }
 

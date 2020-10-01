@@ -91,7 +91,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="5"
-                        android:onClick="OnPlusClick"
+                        android:onClick="onPlusClick"
                         android:text="@string/plus"
                         tools:ignore="NestedWeights" />
 
@@ -100,7 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="5"
-                        android:onClick="OnMinusClick"
+                        android:onClick="onMinusClick"
                         android:text="@string/minus" />
 
                 </LinearLayout>
@@ -111,7 +111,7 @@
                 android:id="@+id/btn_confirm_selection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="OnConfirmClick"
+                android:onClick="onConfirmClick"
                 android:text="@string/confirm"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

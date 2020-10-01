@@ -38,14 +38,14 @@ public class BasketActivity extends AppCompatActivity {
         }
     }
 
-    public void OnAddClick(View view) {
+    public void onAddClick(View view) {
         Intent startAddToOrderActivity = new Intent(BasketActivity.this,
                 AddToOrderActivity.class);
         startAddToOrderActivity.putExtra(AddToOrderActivity.LIST_PRODUCT_KEY, selectedProducts);
         startActivity(startAddToOrderActivity);
     }
 
-    public void OnOrderClick(View view) {
+    public void onOrderClick(View view) {
         AlertDialog.Builder builderOrder = new AlertDialog.Builder(BasketActivity.this);
         builderOrder
                 .setTitle("Confirm")
