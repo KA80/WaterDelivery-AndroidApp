@@ -12,6 +12,7 @@
         android:orientation="horizontal">
 
         <Button
+            android:onClick="OnCancelClick"
             android:id="@+id/btn_close_selection"
             android:layout_width="50dp"
             android:layout_height="wrap_content"

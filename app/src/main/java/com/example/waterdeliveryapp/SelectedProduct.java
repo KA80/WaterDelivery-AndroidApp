@@ -12,10 +12,6 @@ public class SelectedProduct implements Serializable {
         this.name = name;
     }
 
-    public SelectedProduct(String name) {
-        this.name = name;
-    }
-
     public Integer getCount() {
         return count;
     }

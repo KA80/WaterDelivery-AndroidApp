@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -20,49 +19,10 @@ public class AddToOrderActivity extends AppCompatActivity {
 
     public static String LIST_PRODUCT_KEY = "LIST_PRODUCT_KEY";
 
-    private Button btnCancel;
-    private Button btnPlus;
-    private Button btnMinus;
-    private Button btnConfirm;
-
-    private Spinner spinnerProduct;
-
     private EditText editCounter;
     private ImageView imgProduct;
 
     private String selectedProduct;
-
-    private AdapterView.OnItemSelectedListener OnProductSelectedListener = new AdapterView
-            .OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-            String[] products = getResources().getStringArray(R.array.products);
-            switch (products[pos]) {
-                case "Juice":
-                    imgProduct.setImageResource(R.drawable.juice);
-                    break;
-                case "Cola":
-                    imgProduct.setImageResource(R.drawable.cola);
-                    break;
-                default:
-                    imgProduct.setImageResource(R.drawable.water);
-                    break;
-            }
-            selectedProduct = products[pos];
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-
-        }
-    };
-
-    private Button.OnClickListener onCancelClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            onBackPressed();
-        }
-    };
 
 
     @Override
@@ -72,20 +32,32 @@ public class AddToOrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_to_order);
         setSupportActionBar((Toolbar) findViewById(R.id.tool_bar));
 
-        btnCancel = findViewById(R.id.btn_close_selection);
-        btnCancel.setOnClickListener(onCancelClickListener);
+        Spinner spinnerProduct = findViewById(R.id.select_product);
+        spinnerProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                String[] products = getResources().getStringArray(R.array.products);
+                switch (products[pos]) {
+                    case "Juice":
+                        imgProduct.setImageResource(R.drawable.juice);
+                        break;
+                    case "Cola":
+                        imgProduct.setImageResource(R.drawable.cola);
+                        break;
+                    default:
+                        imgProduct.setImageResource(R.drawable.water);
+                        break;
+                }
+                selectedProduct = products[pos];
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
-        btnPlus = findViewById(R.id.btn_plus_counter);
-        btnMinus = findViewById(R.id.btn_minus_counter);
-        btnConfirm = findViewById(R.id.btn_confirm_selection);
-
-        spinnerProduct = findViewById(R.id.select_product);
         editCounter = findViewById(R.id.counter);
-
         imgProduct = findViewById(R.id.img_product);
-
-        spinnerProduct.setOnItemSelectedListener(OnProductSelectedListener);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -109,8 +81,8 @@ public class AddToOrderActivity extends AppCompatActivity {
 
     public void OnConfirmClick(View view) {
         if (!editCounter.getText().toString().isEmpty() && !editCounter.getText().toString().equals("0")) {
-            SelectedProduct product = new SelectedProduct(selectedProduct,
-                    Integer.parseInt(editCounter.getText().toString()));
+            SelectedProduct product = new SelectedProduct(
+                    selectedProduct, Integer.parseInt(editCounter.getText().toString()));
 
             boolean is_found_equal_product = false;
             int prevCount = 0;
@@ -126,16 +98,18 @@ public class AddToOrderActivity extends AppCompatActivity {
             }
             if (!is_found_equal_product)
                 selectedProducts.add(product);
-
-            Intent startBasketActivity = new Intent(AddToOrderActivity.this, BasketActivity.class);
-            startBasketActivity.putExtra(BasketActivity.LIST_PRODUCT_KEY, selectedProducts);
-            startActivity(startBasketActivity);
+            startActivity(new Intent(AddToOrderActivity.this, BasketActivity.class)
+                    .putExtra(BasketActivity.LIST_PRODUCT_KEY, selectedProducts));
             if (!is_found_equal_product)
                 selectedProducts.remove(selectedProducts.size() - 1);
             else
                 selectedProducts.get(index).setCount(prevCount);
         }
 
+    }
+
+    public void OnCancelClick(View view) {
+        onBackPressed();
     }
 
     @Override

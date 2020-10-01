@@ -14,22 +14,7 @@ import androidx.fragment.app.Fragment;
 public class SelectedProductFragment extends Fragment {
 
     private static final String PRODUCT_KEY = "PRODUCT";
-
     private SelectedProduct product;
-
-    private Button.OnClickListener deleteSelectionClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (getFragmentManager() != null) {
-                getFragmentManager().beginTransaction().remove(SelectedProductFragment.this).commit();
-            }
-            BasketActivity.selectedProducts.remove(product);
-        }
-    };
-
-    public SelectedProductFragment() {
-        // Required empty public constructor
-    }
 
     public static SelectedProductFragment newInstance(SelectedProduct product) {
         SelectedProductFragment fragment = new SelectedProductFragment();
@@ -55,13 +40,21 @@ public class SelectedProductFragment extends Fragment {
         TextView TextName = view.findViewById(R.id.selected_product_name);
         TextView TextCount = view.findViewById(R.id.selected_product_count);
 
-        Button deleteSelection = view.findViewById(R.id.delete_selection);
-        deleteSelection.setOnClickListener(deleteSelectionClickListener);
-
         TextName.setText(product.getName());
         TextCount.setText(String.valueOf(product.getCount()));
 
         ImageView img = view.findViewById(R.id.img_selected_product);
+
+        Button deleteSelection = view.findViewById(R.id.delete_selection);
+        deleteSelection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getFragmentManager() != null) {
+                    getFragmentManager().beginTransaction().remove(SelectedProductFragment.this).commit();
+                }
+                BasketActivity.selectedProducts.remove(product);
+            }
+        });
 
         switch (product.getName()) {
             case "Juice":
@@ -77,6 +70,5 @@ public class SelectedProductFragment extends Fragment {
 
         return view;
     }
-
 
 }
