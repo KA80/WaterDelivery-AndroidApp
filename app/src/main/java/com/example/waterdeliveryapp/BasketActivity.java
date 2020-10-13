@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +27,7 @@ public class BasketActivity extends AppCompatActivity {
             selectedProducts = (ArrayList<SelectedProduct>) bundle.getSerializable(LIST_PRODUCT_KEY);
         }
 
-        if (selectedProducts != null) {
+        if (selectedProducts != null && !selectedProducts.isEmpty()) {
             for (SelectedProduct i : selectedProducts) {
                 if (savedInstanceState == null) {
                     getSupportFragmentManager()
@@ -35,6 +36,9 @@ public class BasketActivity extends AppCompatActivity {
                             .commit();
                 }
             }
+        } else {
+            final TextView hint = findViewById(R.id.empty_basket_id);
+            hint.setVisibility(View.VISIBLE);
         }
     }
 
