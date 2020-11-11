@@ -2,6 +2,8 @@ package com.example.waterdeliveryapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -23,6 +25,22 @@ public class AddToOrderActivity extends AppCompatActivity {
     private ImageView imgProduct;
 
     private String selectedProduct;
+
+    private InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            if (dest.toString().equals("0") && ((dstart == 0 && source.toString().equals("0")) || (dstart == 1))) {
+                return "";
+            }
+            if (dest.length() > 5) {
+                return "";
+            }
+            if (dest.length() > 0 && source.toString().equals("0") && dstart == 0) {
+                return "";
+            }
+            return null;
+        }
+    };
 
 
     @Override
@@ -64,11 +82,14 @@ public class AddToOrderActivity extends AppCompatActivity {
             selectedProducts = (ArrayList<SelectedProduct>) bundle.get(LIST_PRODUCT_KEY);
         }
 
+        editCounter.setFilters(new InputFilter[] {filter});
     }
 
     public void onPlusClick(View view) {
-        editCounter.setText(String.valueOf((!editCounter.getText().toString().isEmpty()
-                ? Integer.parseInt(editCounter.getText().toString()) : 0) + 1));
+        if (editCounter.getText().toString().equals("") || Integer.parseInt(editCounter.getText().toString()) < 1000000) {
+            editCounter.setText(String.valueOf((!editCounter.getText().toString().isEmpty()
+                    ? Integer.parseInt(editCounter.getText().toString()) : 0) + 1));
+        }
     }
 
     public void onMinusClick(View view) {
@@ -92,6 +113,9 @@ public class AddToOrderActivity extends AppCompatActivity {
                     index = i;
                     prevCount = selectedProducts.get(i).getCount();
                     selectedProducts.get(i).setCount(selectedProducts.get(i).getCount() + product.getCount());
+                    if (selectedProducts.get(i).getCount() >= 1000000) {
+                        selectedProducts.get(i).setCount(999999);
+                    }
                     is_found_equal_product = true;
                     break;
                 }

@@ -23,9 +23,8 @@ public class BasketActivity extends AppCompatActivity {
         setContentView(R.layout.activity_basket);
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
+        if (bundle != null)
             selectedProducts = (ArrayList<SelectedProduct>) bundle.getSerializable(LIST_PRODUCT_KEY);
-        }
 
         if (selectedProducts != null && !selectedProducts.isEmpty()) {
             for (SelectedProduct i : selectedProducts) {

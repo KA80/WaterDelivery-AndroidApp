@@ -20,6 +20,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
+            android:padding="10dp"
             android:id="@+id/selectionFragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

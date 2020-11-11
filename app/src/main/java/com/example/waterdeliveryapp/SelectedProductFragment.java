@@ -53,6 +53,10 @@ public class SelectedProductFragment extends Fragment {
                     getFragmentManager().beginTransaction().remove(SelectedProductFragment.this).commit();
                 }
                 BasketActivity.selectedProducts.remove(product);
+                if (BasketActivity.selectedProducts.isEmpty() && getActivity() != null) {
+                    TextView textView = getActivity().findViewById(R.id.empty_basket_id);
+                    textView.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -67,7 +71,6 @@ public class SelectedProductFragment extends Fragment {
                 img.setImageResource(R.drawable.water);
                 break;
         }
-
         return view;
     }
 
