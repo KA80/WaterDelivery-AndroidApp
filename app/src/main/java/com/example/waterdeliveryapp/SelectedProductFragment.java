@@ -16,6 +16,20 @@ public class SelectedProductFragment extends Fragment {
     private static final String PRODUCT_KEY = "PRODUCT";
     private SelectedProduct product;
 
+    private final View.OnClickListener delListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (getFragmentManager() != null) {
+                getFragmentManager().beginTransaction().remove(SelectedProductFragment.this).commit();
+            }
+            BasketActivity.selectedProducts.remove(product);
+            if (BasketActivity.selectedProducts.isEmpty() && getActivity() != null) {
+                TextView textView = getActivity().findViewById(R.id.empty_basket_id);
+                textView.setVisibility(View.VISIBLE);
+            }
+        }
+    };
+
     public static SelectedProductFragment newInstance(SelectedProduct product) {
         SelectedProductFragment fragment = new SelectedProductFragment();
         Bundle args = new Bundle();
@@ -46,19 +60,7 @@ public class SelectedProductFragment extends Fragment {
         ImageView img = view.findViewById(R.id.img_selected_product);
 
         Button deleteSelection = view.findViewById(R.id.delete_selection);
-        deleteSelection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getFragmentManager() != null) {
-                    getFragmentManager().beginTransaction().remove(SelectedProductFragment.this).commit();
-                }
-                BasketActivity.selectedProducts.remove(product);
-                if (BasketActivity.selectedProducts.isEmpty() && getActivity() != null) {
-                    TextView textView = getActivity().findViewById(R.id.empty_basket_id);
-                    textView.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        deleteSelection.setOnClickListener(delListener);
 
         switch (product.getName()) {
             case "Juice":
@@ -73,5 +75,4 @@ public class SelectedProductFragment extends Fragment {
         }
         return view;
     }
-
 }

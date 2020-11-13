@@ -3,7 +3,7 @@ package com.example.waterdeliveryapp;
 import java.io.Serializable;
 
 public class SelectedProduct implements Serializable {
-    private String name;
+    private final String name;
     private Integer count;
 
 
@@ -22,9 +22,5 @@ public class SelectedProduct implements Serializable {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

@@ -13,20 +13,14 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.ArrayList;
-
 public class AddToOrderActivity extends AppCompatActivity {
-
-    public static ArrayList<SelectedProduct> selectedProducts;
-
-    public static String LIST_PRODUCT_KEY = "LIST_PRODUCT_KEY";
 
     private EditText editCounter;
     private ImageView imgProduct;
 
     private String selectedProduct;
 
-    private InputFilter filter = new InputFilter() {
+    private final InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             if (dest.toString().equals("0") && ((dstart == 0 && source.toString().equals("0")) || (dstart == 1))) {
@@ -77,16 +71,11 @@ public class AddToOrderActivity extends AppCompatActivity {
         editCounter = findViewById(R.id.counter);
         imgProduct = findViewById(R.id.img_product);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            selectedProducts = (ArrayList<SelectedProduct>) bundle.get(LIST_PRODUCT_KEY);
-        }
-
-        editCounter.setFilters(new InputFilter[] {filter});
+        editCounter.setFilters(new InputFilter[]{filter});
     }
 
     public void onPlusClick(View view) {
-        if (editCounter.getText().toString().equals("") || Integer.parseInt(editCounter.getText().toString()) < 1000000) {
+        if (editCounter.getText().toString().equals("") || Integer.parseInt(editCounter.getText().toString()) < 999999) {
             editCounter.setText(String.valueOf((!editCounter.getText().toString().isEmpty()
                     ? Integer.parseInt(editCounter.getText().toString()) : 0) + 1));
         }
@@ -106,39 +95,27 @@ public class AddToOrderActivity extends AppCompatActivity {
                     selectedProduct, Integer.parseInt(editCounter.getText().toString()));
 
             boolean is_found_equal_product = false;
-            int prevCount = 0;
-            int index = 0;
-            for (int i = 0; i < selectedProducts.size(); i++) {
-                if (selectedProducts.get(i).getName().equals(product.getName())) {
-                    index = i;
-                    prevCount = selectedProducts.get(i).getCount();
-                    selectedProducts.get(i).setCount(selectedProducts.get(i).getCount() + product.getCount());
-                    if (selectedProducts.get(i).getCount() >= 1000000) {
-                        selectedProducts.get(i).setCount(999999);
+
+            for (int i = 0; i < BasketActivity.selectedProducts.size(); i++) {
+                if (BasketActivity.selectedProducts.get(i).getName().equals(product.getName())) {
+                    BasketActivity.selectedProducts.get(i).setCount(BasketActivity.selectedProducts.get(i).getCount() + product.getCount());
+                    if (BasketActivity.selectedProducts.get(i).getCount() > 999999) {
+                        BasketActivity.selectedProducts.get(i).setCount(999999);
                     }
                     is_found_equal_product = true;
                     break;
                 }
             }
             if (!is_found_equal_product)
-                selectedProducts.add(product);
-            startActivity(new Intent(AddToOrderActivity.this, BasketActivity.class)
-                    .putExtra(BasketActivity.LIST_PRODUCT_KEY, selectedProducts));
-            if (!is_found_equal_product)
-                selectedProducts.remove(selectedProducts.size() - 1);
-            else
-                selectedProducts.get(index).setCount(prevCount);
+                BasketActivity.selectedProducts.add(product);
+            startActivity(new Intent(AddToOrderActivity.this, BasketActivity.class).
+                    setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            this.finish();
         }
 
     }
 
     public void onCancelClick(View view) {
         onBackPressed();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        BasketActivity.selectedProducts = selectedProducts;
     }
 }
